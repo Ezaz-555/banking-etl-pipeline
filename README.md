@@ -126,8 +126,8 @@ Validation
 ### 1. Clone the repository
 
 ```bash
-git clone <repository-url>
-cd financial-data-platform
+git clone https://github.com/Ezaz-555/banking-etl-pipeline.git
+cd banking-etl-pipeline
 ```
 
 ### 2. Create virtual environment
