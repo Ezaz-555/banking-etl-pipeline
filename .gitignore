@@ -17,6 +17,9 @@ __pycache__/
 # Logs
 *.log
 
+# Generated / Processed Data
+data/processed/
+
 # OS Files
 .DS_Store
 Thumbs.db

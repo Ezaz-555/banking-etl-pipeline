@@ -2,9 +2,11 @@
 
 ## Introduction
 
-The Financial Data Platform is designed to centralize financial data from multiple banking systems into a single analytical platform. The platform enables business users to access accurate, consistent, and reliable information for reporting, decision-making, and operational analysis.
+The Financial Data Platform is designed to consolidate banking-related data into a centralized PostgreSQL database.
 
-The system integrates customer, account, transaction, loan, card, and branch data into a structured PostgreSQL database using an ETL pipeline.
+The platform processes customer, account, branch, card, loan, and transaction datasets using a Python-based ETL pipeline and makes the processed data available for SQL-based analysis.
+
+All datasets used in the project are synthetically generated.
 
 ---
 
@@ -12,66 +14,70 @@ The system integrates customer, account, transaction, loan, card, and branch dat
 
 The primary objectives of this project are:
 
-- Centralize financial data from multiple operational systems.
-- Improve reporting and analytical capabilities.
-- Provide a single source of truth for financial data.
-- Enable business intelligence through SQL analytics.
-- Demonstrate an end-to-end Data Engineering pipeline.
+- Consolidate banking datasets into a centralized database.
+- Build a reliable end-to-end ETL pipeline.
+- Improve data consistency through validation and duplicate removal.
+- Store processed data in a structured PostgreSQL database.
+- Enable business analysis using SQL queries.
+- Demonstrate practical Data Engineering concepts including ingestion, transformation, validation, loading, logging, and error handling.
 
 ---
 
 # Stakeholders
 
-The following business teams will use the platform.
+The platform is designed to support analytical use cases for the following business areas.
 
-## Executive Management
+## Management
 
-Needs:
+Potential needs include:
 
-- Overall business performance
-- Customer growth
-- Revenue trends
+- Overall customer and account metrics.
+- Transaction activity.
+- Loan portfolio overview.
+- Branch-level performance.
 
 ---
 
 ## Finance Team
 
-Needs:
+Potential needs include:
 
-- Total deposits
-- Total withdrawals
-- Average account balances
-- Transaction summaries
+- Account balance analysis.
+- Transaction summaries.
+- Credit and debit activity.
+- Loan amount analysis.
 
 ---
 
 ## Operations Team
 
-Needs:
+Potential needs include:
 
-- Daily transaction monitoring
-- Failed transaction analysis
-- Branch activity monitoring
+- Transaction monitoring.
+- Account activity analysis.
+- Branch activity analysis.
+- Data quality monitoring.
 
 ---
 
 ## Loan Department
 
-Needs:
+Potential needs include:
 
-- Active loans
-- Loan portfolio analysis
-- Default monitoring
+- Loan portfolio analysis.
+- Loan type distribution.
+- Loan status analysis.
+- Customer-level loan analysis.
 
 ---
 
-## Branch Managers
+## Branch Management
 
-Needs:
+Potential needs include:
 
-- Customer count
-- Transaction volume
-- Branch performance comparison
+- Customer distribution by branch.
+- Account distribution by branch.
+- Transaction activity associated with branches.
 
 ---
 
@@ -79,14 +85,18 @@ Needs:
 
 The platform shall:
 
-- Import financial datasets from CSV files.
-- Validate incoming records.
-- Detect missing or invalid values.
+- Read banking datasets from CSV files.
+- Process each dataset independently.
 - Remove duplicate records.
-- Transform raw data into a standardized format.
-- Load processed data into PostgreSQL.
-- Support SQL queries for reporting.
-- Generate business insights from stored data.
+- Validate required fields before loading.
+- Load validated data into PostgreSQL.
+- Insert new records using PostgreSQL upsert logic.
+- Update existing records when primary-key conflicts occur.
+- Log pipeline execution details.
+- Handle dataset-level processing errors.
+- Continue processing unaffected datasets when an error occurs.
+- Generate an execution summary after pipeline completion.
+- Support SQL-based business analysis.
 
 ---
 
@@ -95,85 +105,94 @@ The platform shall:
 The platform should be:
 
 - Reliable
-- Scalable
 - Maintainable
+- Modular
 - Well documented
 - Easy to extend
 - Consistent
 - Accurate
-- Modular
+- Suitable for batch processing
+
+The current implementation is designed for the project's synthetic datasets and can be extended in the future for larger-scale processing.
 
 ---
 
 # Business Questions
 
-The platform should answer the following business questions.
+The processed data can be used to answer questions such as:
 
 ## Customer Analytics
 
 - How many customers are registered?
-- Which city has the highest number of customers?
+- Which cities have the highest number of customers?
 - What is the average annual income?
-- Which occupation has the most customers?
+- Which occupations have the most customers?
 
 ---
 
 ## Account Analytics
 
-- How many savings accounts exist?
-- How many salary accounts exist?
+- How many accounts exist?
+- How many accounts exist by account type?
 - Which accounts have the highest balances?
 - What is the average account balance?
+- What is the total balance across accounts?
 
 ---
 
 ## Transaction Analytics
 
-- How many transactions occur daily?
-- What is the monthly transaction volume?
-- What is the average transaction amount?
-- Which transaction channels are most frequently used?
-- How many transactions failed?
+- How many transactions exist?
+- How many transactions exist by transaction type?
+- What is the average transaction amount by transaction type?
+- What is the total transaction amount by transaction type?
+- Which accounts have the highest transaction activity?
+- Which customers have the highest transaction activity?
 
 ---
 
 ## Loan Analytics
 
-- How many active loans exist?
-- What is the total outstanding loan amount?
-- Which loan type is most common?
+- How many loans exist?
+- How many loans exist by loan type?
+- How many loans exist by loan status?
+- What is the total loan amount?
 - Which customers have multiple loans?
 
 ---
 
 ## Card Analytics
 
-- How many debit cards are active?
-- How many credit cards are active?
-- Which card network is used the most?
+- How many cards exist?
+- How many cards exist by card type?
+- How many cards are active?
+- How many cards exist by card status?
 
 ---
 
 ## Branch Analytics
 
-- Which branch has the highest number of customers?
-- Which branch processed the highest transaction volume?
-- Which region performs the best?
+- How many branches exist?
+- How many accounts are associated with each branch?
+- Which branches have the highest account activity?
+- How are branches distributed by city and state?
 
 ---
 
 # Assumptions
 
-The following assumptions are made for this project.
+The following assumptions are made for this project:
 
 - All datasets are synthetically generated.
-- Currency used is INR.
-- Each account belongs to one customer.
+- Currency used for monetary values is INR.
+- Each account belongs to a customer.
 - A customer can own multiple accounts.
 - A customer can own multiple cards.
 - A customer can have multiple loans.
-- Transactions are linked to accounts.
-- Data is processed in batch mode.
+- Transactions are associated with accounts.
+- The pipeline processes data in batch mode.
+- PostgreSQL is used as the target database.
+- Primary keys are used to identify unique records.
 
 ---
 
@@ -181,13 +200,15 @@ The following assumptions are made for this project.
 
 The project will be considered successful if:
 
-- All datasets are successfully ingested.
-- Data quality checks are completed.
-- Data is loaded into PostgreSQL.
-- SQL queries execute successfully.
-- Business questions can be answered accurately.
-- Documentation is complete.
-- The ETL pipeline is modular and maintainable.
+- All six datasets can be ingested successfully.
+- Duplicate records are removed during processing.
+- Required-field validation is performed.
+- Validated data is loaded into PostgreSQL.
+- Existing records can be updated through upsert logic.
+- Pipeline errors are logged and handled appropriately.
+- SQL queries can be used to answer relevant business questions.
+- The pipeline produces an execution summary.
+- Project documentation accurately describes the implementation.
 
 ---
 
@@ -195,15 +216,39 @@ The project will be considered successful if:
 
 The project will deliver:
 
-- Clean financial datasets
+- Synthetic banking datasets
+- Python-based ETL pipeline
+- Data validation and cleaning logic
 - PostgreSQL database
-- ETL pipeline
+- PostgreSQL upsert logic
 - SQL analytical queries
-- Business reports
-- Complete project documentation
+- ETL execution logging
+- ETL execution summary
+- Project documentation
+
+---
+
+# Future Enhancements
+
+Potential future enhancements include:
+
+- Incremental data loading.
+- Additional data quality rules.
+- Automated scheduling.
+- Cloud storage integration using Amazon S3.
+- Workflow orchestration.
+- Monitoring and alerting.
+- Distributed processing for larger datasets.
+- Additional analytical reporting.
+
+These enhancements are not part of the current implementation.
 
 ---
 
 # Conclusion
 
-The Financial Data Platform aims to demonstrate how financial data can be collected, processed, stored, and analyzed using industry-standard Data Engineering practices. The platform provides a realistic simulation of a modern banking analytics environment and serves as a foundation for reporting, business intelligence, and future enhancements.
+The Financial Data Platform demonstrates an end-to-end batch ETL workflow for banking data.
+
+The current implementation focuses on reliable data ingestion, duplicate removal, required-field validation, PostgreSQL loading, upsert handling, logging, error handling, and SQL-based analysis.
+
+The modular design provides a foundation for extending the platform with cloud storage, orchestration, additional data quality checks, and distributed processing in the future.

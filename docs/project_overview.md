@@ -2,27 +2,36 @@
 
 ## Project Overview
 
-The Financial Data Platform is an end-to-end Data Engineering project that simulates how financial institutions collect, process, store, and analyze transactional data. The project demonstrates the complete lifecycle of a modern data pipeline, starting from raw CSV files and ending with analytical insights.
+The Financial Data Platform is an end-to-end Data Engineering project that simulates a banking data processing environment.
 
-The platform is designed to replicate a real-world banking environment where customer, account, transaction, loan, card, and branch data are generated from different operational systems. These datasets are validated, transformed, and loaded into a PostgreSQL database, enabling business users to perform reporting and analytics.
+The project generates synthetic banking datasets representing customers, accounts, branches, cards, loans, and transactions. These datasets are processed through a Python-based ETL pipeline and loaded into a PostgreSQL database for SQL-based analysis.
+
+The project demonstrates practical Data Engineering concepts including data ingestion, data cleaning, validation, database loading, upsert handling, logging, error handling, and analytical querying.
 
 ---
 
 # Business Problem
 
-Modern financial institutions generate massive amounts of data from multiple systems every day. Customer information, account details, transactions, loans, and card records are often stored in separate systems.
+Banking systems typically contain multiple types of data related to customers, accounts, transactions, loans, cards, and branches.
 
-Without a centralized data platform, answering business questions becomes difficult.
+For analytical purposes, these datasets need to be collected, processed, validated, and stored in a structured format.
 
-Examples include:
+This project simulates that process by:
 
-- Which branch processed the highest number of transactions?
-- Who are the highest-value customers?
-- What is the monthly transaction volume?
-- Which customers have active loans?
-- Which branches generate the highest revenue?
+- Generating synthetic banking datasets.
+- Processing the datasets through an ETL pipeline.
+- Validating required fields.
+- Removing duplicate records.
+- Loading the processed data into PostgreSQL.
+- Using SQL queries to analyze the resulting data.
 
-This project demonstrates how a centralized data platform can integrate data from multiple sources and make it available for analytics.
+The platform can be used to answer questions such as:
+
+- Which customers have the highest transaction activity?
+- Which accounts have the highest balances?
+- What is the total transaction amount by transaction type?
+- Which loan types are most common?
+- How are accounts distributed across branches?
 
 ---
 
@@ -30,40 +39,62 @@ This project demonstrates how a centralized data platform can integrate data fro
 
 The primary objectives of this project are:
 
-- Build an end-to-end ETL pipeline using Python.
-- Design a normalized PostgreSQL database.
-- Simulate real-world financial datasets.
-- Perform data validation and transformation.
-- Store cleaned data in PostgreSQL.
+- Build an end-to-end batch ETL pipeline using Python.
+- Process multiple related banking datasets.
+- Perform basic data cleaning and validation.
+- Design a relational PostgreSQL database.
+- Load data using PostgreSQL upsert logic.
+- Implement logging and dataset-level error handling.
 - Execute SQL-based analytical queries.
-- Generate business insights from financial data.
-- Demonstrate industry-standard Data Engineering practices.
+- Demonstrate practical Data Engineering concepts using a modular project structure.
 
 ---
 
 # Project Scope
 
-This project covers:
+The project currently covers:
 
-- Customer Management
-- Account Management
-- Financial Transactions
-- Loan Management
-- Card Management
-- Branch Information
-- Data Validation
-- Data Cleaning
-- ETL Processing
-- SQL Analytics
-- Reporting
+- Customer data
+- Account data
+- Branch data
+- Card data
+- Loan data
+- Transaction data
+- CSV data ingestion
+- Duplicate removal
+- Required-field validation
+- PostgreSQL loading
+- PostgreSQL upserts
+- ETL logging
+- Error handling
+- SQL analytics
 
-This project does not include:
+The project currently does not include:
 
-- Internet Banking
-- User Authentication
-- Payment Gateway Integration
-- Real-time Streaming
-- Mobile Applications
+- Real-time streaming
+- Internet banking functionality
+- User authentication
+- Payment gateway integration
+- Mobile applications
+- Production cloud deployment
+- Workflow orchestration
+
+---
+
+# Dataset Overview
+
+The project currently processes six synthetic datasets:
+
+| Dataset | Approximate Records |
+|---------|---------------------:|
+| Customers | 1,000 |
+| Accounts | 1,500 |
+| Branches | 20 |
+| Cards | 1,200 |
+| Loans | 300 |
+| Transactions | 5,000 |
+
+Total records processed: approximately **9,020**.
 
 ---
 
@@ -72,96 +103,46 @@ This project does not include:
 | Category | Technology |
 |----------|------------|
 | Programming Language | Python |
-| Database | PostgreSQL |
 | Data Processing | Pandas |
-| Cloud Storage | Amazon S3 |
-| Cloud Platform | AWS |
-| Database Driver | psycopg2 |
+| Database | PostgreSQL |
+| Database Connectivity | SQLAlchemy |
+| PostgreSQL Driver | psycopg2 |
+| Configuration Management | python-dotenv |
+| Data Generation | Faker |
 | Version Control | Git |
 | Repository | GitHub |
-| IDE | PyCharm |
+| Development Environment | PyCharm |
+
+### Cloud Technologies
+
+Cloud technologies are not part of the current implementation.
+
+Potential cloud components such as Amazon S3 and AWS-based data services may be introduced as future enhancements.
 
 ---
 
 # High-Level Architecture
 
-```
-                Raw CSV Files
-                      │
-                      ▼
-               Data Ingestion
-                      │
-                      ▼
-             Data Validation
-                      │
-                      ▼
-            Data Transformation
-                      │
-                      ▼
-               PostgreSQL Database
-                      │
-                      ▼
-                SQL Analytics
-                      │
-                      ▼
-                 Business Reports
-```
-
----
-
-# Project Directory Structure
-
-```
-financial-data-platform/
-
-│
-├── dashboard/
-├── data/
-│   ├── raw/
-│   └── processed/
-├── docs/
-├── sql/
-├── src/
-├── tests/
-├── README.md
-├── requirements.txt
-├── main.py
-└── .gitignore
-```
-
----
-
-# Future Enhancements
-
-The project can be extended with:
-
-- Apache Airflow for workflow orchestration
-- AWS Glue for managed ETL
-- Amazon Athena for serverless analytics
-- Amazon Redshift for data warehousing
-- Power BI or Tableau dashboards
-- Data quality monitoring
-- Automated pipeline scheduling
-
----
-
-# Learning Outcomes
-
-After completing this project, the following concepts will be demonstrated:
-
-- Data Modeling
-- Relational Database Design
-- ETL Pipeline Development
-- Python Data Processing
-- SQL Query Optimization
-- Data Validation
-- Data Cleaning
-- PostgreSQL Integration
-- AWS Fundamentals
-- Analytics Reporting
-
----
-
-# Conclusion
-
-This project provides practical experience in designing and implementing a modern Financial Data Platform. It follows industry-standard Data Engineering practices and demonstrates how raw operational data can be transformed into meaningful business insights through a structured ETL pipeline.
+```text
+                 Synthetic CSV Files
+                         │
+                         ▼
+                  Data Ingestion
+                         │
+                         ▼
+                 Duplicate Removal
+                         │
+                         ▼
+               Required Field Validation
+                         │
+                         ▼
+                PostgreSQL Upsert
+                         │
+                         ▼
+                  ETL Execution Log
+                         │
+                         ▼
+                  ETL Summary
+                         │
+                         ▼
+                   SQL Analytics

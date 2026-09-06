@@ -1,14 +1,14 @@
 # Financial Data Platform
 
-A Python-based ETL (Extract, Transform, Load) project that simulates a banking system by generating synthetic financial data, cleaning it, and loading it into a PostgreSQL database.
+A Python-based ETL pipeline that simulates a banking data platform by generating synthetic financial datasets, processing and validating the data, and loading it into PostgreSQL for SQL-based analysis.
 
-This project demonstrates fundamental Data Engineering concepts, including data ingestion, transformation, loading, and validation using a modular Python architecture.
+The project demonstrates practical Data Engineering concepts including data ingestion, data cleaning, validation, PostgreSQL upserts, logging, error handling, and analytical querying.
 
 ---
 
 ## Project Overview
 
-The project simulates a financial institution by generating synthetic datasets for:
+The platform simulates a banking environment with six related datasets:
 
 - Customers
 - Accounts
@@ -17,211 +17,34 @@ The project simulates a financial institution by generating synthetic datasets f
 - Loans
 - Transactions
 
-The generated CSV files are processed through an ETL pipeline and loaded into PostgreSQL.
+The datasets are generated as CSV files and processed through a Python ETL pipeline before being loaded into PostgreSQL.
+
+The current project processes approximately **9,020 records** across the six datasets.
 
 ---
 
-## Features
-
-- Generate realistic banking datasets
-- Modular ETL pipeline
-- Data validation by removing duplicate records
-- Load data into PostgreSQL using SQLAlchemy
-- Database validation through SQL queries
-- Clean and maintainable project structure
-
----
-
-## Tech Stack
-
-- Python 3.x
-- Pandas
-- PostgreSQL
-- SQLAlchemy
-- Psycopg2
-- python-dotenv
-
----
-
-## Project Structure
+## ETL Pipeline
 
 ```text
-financial-data-platform/
-│
-├── data/
-│   ├── raw/
-│   └── processed/
-│
-├── docs/
-│
-├── src/
-│   ├── analytics/
-│   │   └── data_summary.py
-│   │
-│   ├── generators/
-│   │
-│   ├── ingestion/
-│   │   └── csv_reader.py
-│   │
-│   ├── transformation/
-│   │   └── data_cleaner.py
-│   │
-│   ├── loading/
-│   │   └── load_to_postgres.py
-│   │
-│   └── utils/
-│       ├── config.py
-│       └── database.py
-│
-├── main.py
-├── requirements.txt
-├── README.md
-└── .env
-```
-
----
-
-## ETL Workflow
-
-```text
-Generate Data
-      │
-      ▼
-CSV Files
-      │
-      ▼
-Ingestion
-(Read CSV)
-      │
-      ▼
-Transformation
-(Remove Duplicates)
-      │
-      ▼
-Loading
-(PostgreSQL)
-      │
-      ▼
-Validation
-(Row Count Verification)
-```
-
----
-
-## Database Tables
-
-| Table | Description |
-|--------|-------------|
-| customers | Customer information |
-| accounts | Bank account details |
-| branches | Branch information |
-| cards | Debit/Credit card details |
-| loans | Loan information |
-| transactions | Financial transactions |
-
----
-
-## How to Run
-
-### 1. Clone the repository
-
-```bash
-git clone <repository-url>
-cd financial-data-platform
-```
-
-### 2. Create virtual environment
-
-```bash
-python -m venv venv
-```
-
-Activate the environment.
-
-Windows
-
-```bash
-venv\Scripts\activate
-```
-
-Linux / macOS
-
-```bash
-source venv/bin/activate
-```
-
-### 3. Install dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### 4. Configure environment variables
-
-Create a `.env` file.
-
-```env
-DB_HOST=localhost
-DB_PORT=5432
-DB_NAME=financial_db
-DB_USER=postgres
-DB_PASSWORD=*****
-```
-
-### 5. Run the ETL Pipeline
-
-```bash
-python main.py
-```
-
-### 6. Validate Loaded Data
-
-```bash
-python src/analytics/data_summary.py
-```
-
----
-
-## Sample Output
-
-```text
-========== DATABASE SUMMARY ==========
-
-Customers      : 1000
-Accounts       : 1500
-Branches       : 20
-Cards          : 1200
-Loans          : 300
-Transactions   : 5000
-
-======================================
-```
-
----
-
-## Key Learnings
-
-- Python ETL pipeline development
-- Data cleaning using Pandas
-- PostgreSQL integration with SQLAlchemy
-- Modular project architecture
-- SQL-based data validation
-- Environment variable management using python-dotenv
-
----
-
-## Future Enhancements
-
-- Store raw CSV files in Amazon S3
-- Use Amazon RDS for PostgreSQL
-- Deploy ETL pipeline on Amazon EC2
-- Schedule ETL execution using Apache Airflow
-
----
-
-## Author
-
-**Ezaz Ahmed Mohammad**
-
-- GitHub: https://github.com/Ezaz-555
-- LinkedIn: https://www.linkedin.com/in/ezaz-ahmed-mohammad-8430571b4
+Synthetic CSV Files
+        │
+        ▼
+   Data Ingestion
+        │
+        ▼
+ Duplicate Removal
+        │
+        ▼
+Required Field Validation
+        │
+        ▼
+ PostgreSQL Upsert
+        │
+        ▼
+ Logging & Error Handling
+        │
+        ▼
+  ETL Execution Summary
+        │
+        ▼
+    SQL Analytics
